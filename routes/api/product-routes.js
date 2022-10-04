@@ -7,14 +7,14 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
-  // *** Code added by Liz
+  // Liz added this code
   try {
     const productData = await Product.findAll({
-        include: [{ model: Product, Category, Tag }],
+        include: [{ model: Category, Tag }],
     });
     res.status(200).json(productData);
 } catch (err) {
-    res.status(500).json(err);
+    res.status(400).json(err);
 }
 });
 
@@ -24,14 +24,17 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
-  // *** Code added by Liz
+  // Liz added this code
   try {
-    const productData = await Product.findByPk({
-        include: [{ model: Product, Category, Tag }],
-    });
+    const productData = await Product.findByPk(
+      req.params.id,
+      {
+          include: [{ model: Category, Tag }],
+      }
+    );
     res.status(200).json(productData);
 } catch (err) {
-    res.status(500).json(err);
+    res.status(400).json(err);
 }
 
 });
@@ -39,21 +42,32 @@ router.get('/:id', async (req, res) => {
 // create new product
 router.post('/', (req, res) => {
 
-  // ***Does Liz need to add code here?
+  // ***???Does Liz need to add code here?
+
   /* req.body should look like this...
     {
       product_name: "Basketball",
       price: 200.00,
       stock: 3,
-      tagIds: [1, 2, 3, 4]
+      tagIds: [1]
+    }
+
+    When doing the post, formulate the data like this:
+     {
+      "product_name": "Basketball",
+      "price": 200.00,
+      "stock": 3,
+			"category_id": 2,
+      "tagIds": [1]
     }
   */
 
 
-
+  // creating the product
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
+      // checking to see if they gave you tags
       if (req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
@@ -115,8 +129,19 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
+  // Liz added this code
+  try {
+    const productData = await Product.destroy({
+        where: { 
+            id: req.params.id,
+         },
+    });
+    res.status(200).json(productData);
+} catch (err) {
+    res.status(400).json(err);
+}
 });
 
 module.exports = router;
