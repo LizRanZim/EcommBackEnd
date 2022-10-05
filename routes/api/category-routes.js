@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
       {
         include: [{ model: Product }],
       }
-      );
+    );
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(400).json(err);
@@ -43,13 +43,13 @@ router.post('/', async (req, res) => {
   // Liz added this code
 
   try {
-    const categoryData = await Category.create(req.body,{
+    const categoryData = await Category.create(req.body, {
 
- /*  When doing the post, formulate the data like this:
-{
-  "category_name": "Skiing",
-}
-*/
+      /*  When doing the post, formulate the data like this:
+     {
+       "category_name": "Skiing",
+     }
+     */
       category_id: req.body.category_id,
     });
     res.status(200).json(categoryData);
@@ -67,10 +67,10 @@ router.put('/:id', async (req, res) => {
   try {
     const categoryData = await Category.update(req.body,
       {
-      where: {
-        id: req.params.id,
-      },
-    });
+        where: {
+          id: req.params.id,
+        },
+      });
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(400).json(err);

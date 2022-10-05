@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
       {
         include: [{ model: Product, ProductTag }],
       }
-      );
+    );
     res.status(200).json(tagData);
   } catch (err) {
     res.status(400).json(err);
@@ -41,13 +41,13 @@ router.post('/', async (req, res) => {
   // create a new tag
   // Liz added this code
   try {
-    const tagData = await Tag.create(req.body,{
+    const tagData = await Tag.create(req.body, {
 
-/*  When doing the post, formulate the data like this:
-{
-  "tag_name": "Basketball",
-}
-*/
+      /*  When doing the post, formulate the data like this:
+      {
+        "tag_name": "Basketball",
+      }
+      */
       tag_id: req.body.tag_id,
     });
     res.status(200).json(tagData);
@@ -61,11 +61,12 @@ router.put('/:id', async (req, res) => {
   // Liz added this code
 
   try {
-    const tagData = await Tag.update({
-      where: {
-        id: req.params.id,
-      },
-    });
+    const tagData = await Tag.update(req.body,
+      {
+        where: {
+          id: req.params.id,
+        },
+      });
     res.status(200).json(tagData);
   } catch (err) {
     res.status(400).json(err);

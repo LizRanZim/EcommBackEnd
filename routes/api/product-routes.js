@@ -10,12 +10,12 @@ router.get('/', async (req, res) => {
   // Liz added this code
   try {
     const productData = await Product.findAll({
-        include: [{ model: Category, Tag }],
+      include: [{ model: Category, Tag }],
     });
     res.status(200).json(productData);
-} catch (err) {
+  } catch (err) {
     res.status(400).json(err);
-}
+  }
 });
 
 
@@ -29,13 +29,13 @@ router.get('/:id', async (req, res) => {
     const productData = await Product.findByPk(
       req.params.id,
       {
-          include: [{ model: Category, Tag }],
+        include: [{ model: Category, Tag }],
       }
     );
     res.status(200).json(productData);
-} catch (err) {
+  } catch (err) {
     res.status(400).json(err);
-}
+  }
 
 });
 
@@ -54,11 +54,11 @@ router.post('/', (req, res) => {
 
     When doing the post, formulate the data like this:
      {
-      "product_name": "Basketball",
+      "product_name": "Ski Boots",
       "price": 200.00,
       "stock": 3,
-			"category_id": 2,
-      "tagIds": [1]
+      "category_id": 2,
+      "tagIds": [2]
     }
   */
 
@@ -134,14 +134,14 @@ router.delete('/:id', async (req, res) => {
   // Liz added this code
   try {
     const productData = await Product.destroy({
-        where: { 
-            id: req.params.id,
-         },
+      where: {
+        id: req.params.id,
+      },
     });
     res.status(200).json(productData);
-} catch (err) {
+  } catch (err) {
     res.status(400).json(err);
-}
+  }
 });
 
 module.exports = router;
